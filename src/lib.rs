@@ -155,6 +155,154 @@ pub fn long_suffix_array_i64(
     }
 }
 
+/// Versions that use OPEN MP for multi-threaded construction.
+///
+/// TODO: Explose the num_threads parameter?
+#[cfg(feature = "openmp")]
+pub mod par {
+    use crate::sys;
+
+    pub fn suffix_array_u8(text: &[u8], sa: &mut [i32]) -> Result<(), ()> {
+        if sa.len() < text.len() {
+            return Err(());
+        }
+        let res = unsafe {
+            sys::libsais_omp(
+                text.as_ptr(),
+                sa.as_mut_ptr(),
+                text.len() as i32,
+                sa.len() as i32 - text.len() as i32,
+                std::ptr::null_mut(),
+                0,
+            )
+        };
+        if res == 0 {
+            Ok(())
+        } else {
+            Err(())
+        }
+    }
+
+    pub fn suffix_array_u16(text: &[u16], sa: &mut [i32]) -> Result<(), ()> {
+        if sa.len() < text.len() {
+            return Err(());
+        }
+        let res = unsafe {
+            sys::libsais16_omp(
+                text.as_ptr(),
+                sa.as_mut_ptr(),
+                text.len() as i32,
+                sa.len() as i32 - text.len() as i32,
+                std::ptr::null_mut(),
+                0,
+            )
+        };
+        if res == 0 {
+            Ok(())
+        } else {
+            Err(())
+        }
+    }
+
+    /// Text is modified during construction, but restored afterwards.
+    /// `alphabet_size` is the alphabet size.
+    /// TODO: Is this #distinct characters or upper bound on character value?
+    pub fn suffix_array_i32(
+        text: &mut [i32],
+        sa: &mut [i32],
+        alphabet_size: i32,
+    ) -> Result<(), ()> {
+        if sa.len() < text.len() {
+            return Err(());
+        }
+        let res = unsafe {
+            sys::libsais_int_omp(
+                text.as_mut_ptr(),
+                sa.as_mut_ptr(),
+                text.len() as i32,
+                alphabet_size,
+                sa.len() as i32 - text.len() as i32,
+                0,
+            )
+        };
+        if res == 0 {
+            Ok(())
+        } else {
+            Err(())
+        }
+    }
+
+    pub fn long_suffix_array_u8(text: &[u8], sa: &mut [i64]) -> Result<(), ()> {
+        if sa.len() < text.len() {
+            return Err(());
+        }
+        let res = unsafe {
+            sys::libsais64_omp(
+                text.as_ptr(),
+                sa.as_mut_ptr(),
+                text.len() as i64,
+                sa.len() as i64 - text.len() as i64,
+                std::ptr::null_mut(),
+                0,
+            )
+        };
+        if res == 0 {
+            Ok(())
+        } else {
+            Err(())
+        }
+    }
+
+    pub fn long_suffix_array_u16(text: &[u16], sa: &mut [i64]) -> Result<(), ()> {
+        if sa.len() < text.len() {
+            return Err(());
+        }
+        let res = unsafe {
+            sys::libsais16x64_omp(
+                text.as_ptr(),
+                sa.as_mut_ptr(),
+                text.len() as i64,
+                sa.len() as i64 - text.len() as i64,
+                std::ptr::null_mut(),
+                0,
+            )
+        };
+        if res == 0 {
+            Ok(())
+        } else {
+            Err(())
+        }
+    }
+
+    /// Text is modified during construction, but restored afterwards.
+    /// `alphabet_size` is the alphabet size.
+    /// TODO: Is this #distinct characters or upper bound on character value?
+    pub fn long_suffix_array_i64(
+        text: &mut [i64],
+        sa: &mut [i64],
+        alphabet_size: i64,
+    ) -> Result<(), ()> {
+        if sa.len() < text.len() {
+            return Err(());
+        }
+        let res = unsafe {
+            sys::libsais64_long_omp(
+                text.as_mut_ptr(),
+                sa.as_mut_ptr(),
+                text.len() as i64,
+                alphabet_size,
+                sa.len() as i64 - text.len() as i64,
+                0,
+            )
+        };
+        if res == 0 {
+            Ok(())
+        } else {
+            Err(())
+        }
+    }
+}
+
 #[test]
 fn test() {
     let text = b"ACGT";

@@ -9,3 +9,7 @@ include = ["src/**/*", "LICENSE.md", "README.md", "CHANGELOG.md"]
 [build-dependencies]
 bindgen = "*"
 cmake = "0.1.50"
+
+[features]
+# Enable the openmp parallelized features.
+openmp = []
