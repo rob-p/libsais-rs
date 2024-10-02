@@ -148,3 +148,10 @@ pub fn long_suffix_array_i64(
         Err(())
     }
 }
+
+#[test]
+fn test() {
+    let text = b"ACGT";
+    let mut sa = vec![0; text.len()];
+    suffix_array_u8(text, &mut sa).unwrap();
+}
