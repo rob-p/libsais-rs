@@ -1,0 +1,11 @@
+[package]
+name = "libsais-rs"
+version = "0.1.0"
+edition = "2021"
+include = ["src/**/*", "LICENSE.md", "README.md", "CHANGELOG.md"]
+
+[workspace]
+members = ["libsais-sys"]
+
+[dependencies]
+libsais-sys = { version = "*", path = "libsais-sys" }
