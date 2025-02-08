@@ -303,9 +303,27 @@ pub mod par {
     }
 }
 
-#[test]
-fn test() {
-    let text = b"ACGT";
-    let mut sa = vec![0; text.len()];
-    suffix_array_u8(text, &mut sa).unwrap();
+#[cfg(test)]
+mod test {
+    use super::*;
+    #[test]
+    fn u8() {
+        let n = 1000000;
+        let text = (0..n).map(|_| rand::random()).collect::<Vec<u8>>();
+        let mut sa = vec![0; text.len()];
+        suffix_array_u8(&text, &mut sa).unwrap();
+    }
+
+    #[test]
+    fn i64() {
+        let n = 10;
+        let max = i32::MAX as i64 / 20;
+        let mut text = (0..n)
+            .map(|_| (rand::random::<u64>() % (max as u64 + 1)) as i64)
+            .collect::<Vec<i64>>();
+        let max = *text.iter().max().unwrap();
+        eprintln!("max: {}", max);
+        let mut sa = vec![0; text.len()];
+        long_suffix_array_i64(&mut text, &mut sa, max + 1).unwrap();
+    }
 }

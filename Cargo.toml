@@ -6,6 +6,9 @@ include = ["src/**/*", "LICENSE.md", "README.md", "CHANGELOG.md"]
 
 [dependencies]
 
+[dev-dependencies]
+rand = "*"
+
 [build-dependencies]
 bindgen = "*"
 cmake = "0.1.50"
@@ -13,3 +16,4 @@ cmake = "0.1.50"
 [features]
 # Enable the openmp parallelized features.
 openmp = []
+default = ['openmp']
