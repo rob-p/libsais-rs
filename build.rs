@@ -4,9 +4,10 @@ fn main() {
     let mut cmake = cmake
         .cflag("-DCMAKE_BUILD_TYPE=Release")
         .cflag("-DEXTRA_FLAGS=\"-march=native\"");
-    if cfg!(feature = "openmp") {
+    /*if cfg!(feature = "openmp") {
         cmake = cmake.cflag("-DLIBSAIS_OPENMP");
     }
+    */
     let out_dir = cmake.build_target("all").build();
     println!("cargo:rustc-link-search=native={}/build", out_dir.display());
     println!("cargo:rustc-link-lib=static=libsais");
