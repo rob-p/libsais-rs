@@ -17,10 +17,10 @@ fn main() {
         .header("libsais/include/libsais64.h")
         .header("libsais/include/libsais16x64.h")
         .clang_arg("--include-directory=libsais");
-    if cfg!(feature = "openmp") {
+    /*if cfg!(feature = "openmp") {
         bindgen = bindgen.clang_arg("-DLIBSAIS_OPENMP");
         println!("cargo:rustc-link-lib=gomp");
-    }
+    }*/
     bindgen
         .generate()
         .expect("Unable to generate bindings")
